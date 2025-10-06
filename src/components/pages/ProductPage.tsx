@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Star, Check, Shield, Info } from 'lucide-react';
+import { ArrowLeft, Star, Shield, Info } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -41,7 +41,7 @@ export function ProductPage() {
   }
 
   const product = state.selectedProduct;
-  const stockLevel =  Math.floor(Math.random() * 50) + 10;
+  const stockLevel = Math.floor(Math.random() * 50) + 10;
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
@@ -65,7 +65,29 @@ export function ProductPage() {
     navigate('/cart');
   };
 
-  // recommendations
+  const handleCheckout = () => {
+    if (!selectedSize || !selectedColor) {
+      alert('Please select size and color before proceeding to checkout');
+      return;
+    }
+
+    const cartItem = {
+      product,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: 1,
+      addOns: {
+        warranty: warrantyOptIn,
+        insurance: false,
+        premiumSupport: false,
+      },
+    };
+
+    addToCart(cartItem);
+    navigate('/checkout');
+  };
+
+  // Recommendations
   let dataset: Product[] = [];
   switch (product.gender) {
     case 'women':
@@ -240,17 +262,29 @@ export function ProductPage() {
             </div>
           </div>
 
-          <Button
-            onClick={handleAddToCart}
-            className="w-full h-12 text-lg"
-            disabled={!selectedSize || !selectedColor || stockLevel === 0}
-          >
-            {stockLevel === 0
-              ? 'Out of Stock'
-              : `Add to Cart - $${(
-                  warrantyOptIn ? product.price + 19.99 : product.price
-                ).toFixed(2)}`}
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={handleAddToCart}
+              className="w-full h-12 text-lg"
+              disabled={!selectedSize || !selectedColor || stockLevel === 0}
+            >
+              {stockLevel === 0
+                ? 'Out of Stock'
+                : `Add to Cart - $${(
+                    warrantyOptIn ? product.price + 19.99 : product.price
+                  ).toFixed(2)}`}
+            </Button>
+
+            <Button
+              onClick={handleCheckout}
+              variant="secondary"
+              className="w-full h-12 text-lg"
+              disabled={!selectedSize || !selectedColor || stockLevel === 0}
+            >
+              Proceed to Checkout
+            </Button>
+          </div>
 
           <div className="mt-4 text-center text-sm text-gray-600">
             Free shipping on orders over $75 • 30-day return policy
