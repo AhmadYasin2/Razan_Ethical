@@ -1,15 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce Website Deceptive Design (Copy)</title>
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Ecommerce Website Deceptive Design (Copy)</title>
-    </head>
+    <!-- Styles required by the WebGazer calibration page (served from /public) -->
+    <link
+      rel="stylesheet"
+      href="/WebGazer/www/node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/WebGazer/www/node_modules/sweetalert/dist/sweetalert.css"
+    />
+    <link rel="stylesheet" href="/WebGazer/www/css/style.css" />
+  </head>
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+  <body>
+    <div id="root"></div>
+
+    <!-- WebGazer and dependencies - loaded globally for calibration page -->
+    <script src="/WebGazer/www/webgazer.js"></script>
+    <script src="/WebGazer/www/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

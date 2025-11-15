@@ -1,53 +1,50 @@
 import { useState } from "react";
-import { ArrowLeft, CreditCard, User, UserCheck, Info } from "lucide-react";
+import { ArrowLeft, CreditCard } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Checkbox } from "../ui/checkbox";
 import { Separator } from "../ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Alert, AlertDescription } from "../ui/alert";
 import { useAppContext } from "../AppContext";
 import { useNavigate } from "react-router-dom";
 
 export function CheckoutPage() {
   const { state, setUserAccount } = useAppContext();
-  const navigate = useNavigate(); // ✅ use navigate instead of setCurrentPage
+  const navigate = useNavigate();
 
-  const [checkoutType, setCheckoutType] = useState<"guest" | "account">("guest");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newsletterOptIn, setNewsletterOptIn] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [newsletter, setNewsletter] = useState(false);
+  const [createAccount, setCreateAccount] = useState(false);
 
   const calculateTotal = () => {
     const subtotal = state.cartItems.reduce((total, item) => {
       let itemTotal = item.product.price * item.quantity;
       if (item.addOns.warranty) itemTotal += 19.99;
+      if (item.addOns.insurance) itemTotal += 14.99;
+      if (item.addOns.premiumSupport) itemTotal += 9.99;
       return total + itemTotal;
     }, 0);
 
-    const shipping = subtotal >= 75 ? 0 : 6.99;
-    const tax = subtotal * 0.08;
-    return subtotal + shipping + tax;
+    return subtotal; // No hidden fees
   };
 
-  const handleCompleteOrder = () => {
-    if (checkoutType === "account" && (!email || !password)) {
-      alert("Please fill in all required fields");
+  const handleCreateAccount = () => {
+    if (!email || !password) {
+      alert("Please fill in all required fields.");
       return;
     }
 
-    if (checkoutType === "account") {
-      setUserAccount({
-        email,
-        hasAccount: true,
-        premiumTrial: false,
-      });
-    }
+    setUserAccount({
+      email,
+      hasAccount: true,
+      premiumTrial: false
+    });
 
-    // ✅ Navigate to confirmation page
+    navigate("/confirmation");
+  };
+
+  const handleGuestCheckout = () => {
     navigate("/confirmation");
   };
 
@@ -58,6 +55,7 @@ export function CheckoutPage() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
         </Button>
+
         <div className="text-center py-12">
           <h2 className="text-2xl mb-4">No items to checkout</h2>
           <Button onClick={() => navigate("/")}>Browse Products</Button>
@@ -76,119 +74,72 @@ export function CheckoutPage() {
       <h1 className="text-3xl mb-8">Checkout</h1>
 
       <div className="grid lg:grid-cols-2 gap-8">
+        {/* LEFT SIDE */}
         <div className="space-y-6">
-          {/* Customer Info Section */}
+          {/* Optional Account Creation */}
           <div className="border rounded-lg p-6">
-            <h2 className="text-xl mb-4">Customer Information</h2>
+            <h2 className="text-xl mb-4">Account (Optional)</h2>
 
-            <Tabs
-              value={checkoutType}
-              onValueChange={(value: "guest" | "account") => setCheckoutType(value)}
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="guest" className="flex items-center gap-2">
-                  <User className="h-4 w-4" /> Guest Checkout
-                </TabsTrigger>
-                <TabsTrigger value="account" className="flex items-center gap-2">
-                  <UserCheck className="h-4 w-4" /> Create Account
-                </TabsTrigger>
-              </TabsList>
+            <div className="flex items-start space-x-2 mb-4">
+              <Checkbox
+                id="create-account"
+                checked={createAccount}
+                onCheckedChange={setCreateAccount}
+              />
+              <label htmlFor="create-account" className="text-sm">
+                Create an account for easier order tracking
+              </label>
+            </div>
 
-              <TabsContent value="guest" className="space-y-4 mt-4">
-                <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>
-                    You can checkout as a guest. Order tracking will be sent to your email.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>First Name *</Label>
-                    <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                  </div>
-                  <div>
-                    <Label>Last Name *</Label>
-                    <Input value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                  </div>
-                </div>
-
+            {createAccount && (
+              <div className="space-y-4">
                 <div>
-                  <Label>Email Address *</Label>
+                  <Label htmlFor="email">Email *</Label>
                   <Input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
-                    required
-                  />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="account" className="space-y-4 mt-4">
-                <Alert>
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>
-                    Create an account to track orders and get faster checkout.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>First Name *</Label>
-                    <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                  </div>
-                  <div>
-                    <Label>Last Name *</Label>
-                    <Input value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Email Address *</Label>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
-                    required
+                    placeholder="Enter your email"
                   />
                 </div>
 
                 <div>
-                  <Label>Create Password *</Label>
+                  <Label htmlFor="password">Password *</Label>
                   <Input
+                    id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Choose a secure password"
-                    required
+                    placeholder="Create a password"
                   />
                 </div>
-              </TabsContent>
-            </Tabs>
 
-            {/* Newsletter Opt-in */}
-            <div className="mt-4 pt-4 border-t">
-              <div className="flex items-start space-x-3">
-                <Checkbox
-                  id="newsletter-checkout"
-                  checked={newsletterOptIn}
-                  onCheckedChange={setNewsletterOptIn}
-                />
-                <div>
-                  <label htmlFor="newsletter-checkout" className="text-sm font-medium">
-                    Subscribe to hear about future offers
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="newsletter"
+                    checked={newsletter}
+                    onCheckedChange={setNewsletter}
+                  />
+                  <label htmlFor="newsletter" className="text-sm text-gray-600">
+                    Receive occasional product updates and discounts
                   </label>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Get notified about new arrivals. You can unsubscribe anytime.
-                  </p>
                 </div>
+
+                <Button onClick={handleCreateAccount} className="w-full">
+                  Create Account & Finish Checkout
+                </Button>
               </div>
-            </div>
+            )}
+
+            {!createAccount && (
+              <Button onClick={handleGuestCheckout} className="w-full mt-2">
+                Continue as Guest
+              </Button>
+            )}
           </div>
 
-          {/* Payment Info */}
+          {/* Payment Form */}
           <div className="border rounded-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <CreditCard className="h-5 w-5" />
@@ -197,59 +148,69 @@ export function CheckoutPage() {
 
             <div className="space-y-4">
               <div>
-                <Label>Card Number *</Label>
-                <Input placeholder="1234 5678 9012 3456" />
+                <Label htmlFor="card">Card Number</Label>
+                <Input id="card" placeholder="1234 5678 9012 3456" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Expiry Date *</Label>
-                  <Input placeholder="MM/YY" />
+                  <Label htmlFor="expiry">Expiry Date</Label>
+                  <Input id="expiry" placeholder="MM/YY" />
                 </div>
                 <div>
-                  <Label>CVV *</Label>
-                  <Input placeholder="123" />
+                  <Label htmlFor="cvv">CVV</Label>
+                  <Input id="cvv" placeholder="123" />
                 </div>
               </div>
 
               <div>
-                <Label>Cardholder Name *</Label>
-                <Input placeholder="John Doe" />
+                <Label htmlFor="cardholder">Cardholder Name</Label>
+                <Input id="cardholder" placeholder="John Doe" />
               </div>
 
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
-                  Your payment info is encrypted and secure. We never store your card details.
-                </AlertDescription>
-              </Alert>
-
-              <Button onClick={handleCompleteOrder} className="w-full h-12">
-                Complete Order - ${calculateTotal().toFixed(2)}
+              <Button onClick={handleGuestCheckout} className="w-full h-12">
+                Complete Order – ${calculateTotal().toFixed(2)}
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* RIGHT SIDE: Order Summary */}
         <div className="border rounded-lg p-6 h-fit">
           <h2 className="text-xl mb-4">Order Summary</h2>
-          {state.cartItems.map((item, index) => (
-            <div key={index} className="flex gap-3 mb-3">
-              <img
-                src={item.product.image}
-                alt={item.product.name}
-                className="w-16 h-16 object-cover rounded"
-              />
-              <div className="flex-1">
-                <p className="text-sm font-medium">{item.product.name}</p>
-                <p className="text-xs text-gray-600">{item.size} • {item.color}</p>
-                <p className="text-sm">${item.product.price}</p>
+
+          <div className="space-y-3 mb-4">
+            {state.cartItems.map((item, index) => (
+              <div key={index} className="flex gap-3">
+                <img
+                  src={item.product.image}
+                  alt={item.product.name}
+                  className="w-16 h-16 object-cover rounded"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{item.product.name}</p>
+                  <p className="text-xs text-gray-600">
+                    {item.size} • {item.color}
+                  </p>
+                  <p className="text-sm">${item.product.price}</p>
+                  {item.addOns.warranty && (
+                    <p className="text-xs text-gray-600">+ Warranty $19.99</p>
+                  )}
+                  {item.addOns.insurance && (
+                    <p className="text-xs text-gray-600">+ Insurance $14.99</p>
+                  )}
+                  {item.addOns.premiumSupport && (
+                    <p className="text-xs text-gray-600">
+                      + Premium Support $9.99
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           <Separator className="my-4" />
+
           <div className="flex justify-between text-lg font-medium">
             <span>Total</span>
             <span>${calculateTotal().toFixed(2)}</span>

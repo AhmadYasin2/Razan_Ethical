@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart, Eye, Check, Info } from "lucide-react";
+import { ShoppingCart, Eye, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useAppContext } from "./AppContext";
@@ -39,16 +39,9 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     if (onAddToCart) {
       onAddToCart(product.id);
       setAdded(true);
-      setTimeout(() => setAdded(false), 1000);
+      setTimeout(() => setAdded(false), 1200);
     }
   };
-
-  const stockInfo =
-    product.piecesLeft !== undefined
-      ? product.piecesLeft > 5
-        ? `${product.piecesLeft} items available`
-        : `Low stock: only ${product.piecesLeft} left`
-      : "In stock and ready to ship";
 
   return (
     <div
@@ -66,15 +59,9 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
       <div className="absolute top-3 left-3 flex flex-col gap-1">
         {product.isNew && <Badge className="bg-blue-600">New</Badge>}
-        {product.isSale && <Badge className="bg-green-600">Sale</Badge>}
+        {product.isSale && <Badge className="bg-red-600">Sale</Badge>}
       </div>
 
-      <div className="absolute top-3 right-3">
-        <Badge variant="outline" className="bg-gray-50 border-gray-200 text-gray-700 flex items-center gap-1">
-          <Info className="h-3 w-3" />
-          {stockInfo}
-        </Badge>
-      </div>
 
       <div className="p-4">
         <h3 className="text-lg mb-2 group-hover:text-blue-600 transition-colors">
@@ -86,17 +73,9 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           <div className="flex items-center gap-2">
             <span className="text-xl">${product.price}</span>
             {product.originalPrice && (
-              <>
-                <span className="text-gray-500 line-through">
-                  ${product.originalPrice}
-                </span>
-                <Badge
-                  variant="outline"
-                  className="bg-green-50 border-green-200 text-green-800 text-xs"
-                >
-                  Save ${(product.originalPrice - product.price).toFixed(2)}
-                </Badge>
-              </>
+              <span className="text-gray-500 line-through">
+                ${product.originalPrice}
+              </span>
             )}
           </div>
 
@@ -129,11 +108,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           </div>
         </div>
 
-        {/* Transparent, calm product info instead of fake urgency */}
-        <div className="mt-2 text-xs text-gray-500 flex items-center gap-1">
-          <Info className="h-3 w-3" />
-          <span>Free returns within 30 days • Ships within 24h</span>
-        </div>
+        {product.isSale && (
+          <div className="mt-2 text-xs text-red-600 font-medium">
+            ⏰ Sale ends in 2 hours!
+          </div>
+        )}
       </div>
     </div>
   );
