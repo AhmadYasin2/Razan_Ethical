@@ -19,7 +19,7 @@ export function Header({ cartItemCount = 0 }: HeaderProps) {
   const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const { state, endWebGazerSession } = useAppContext();
+  const { state, endWebGazerSession, setSelectedProduct } = useAppContext();
 
   // Setup fuzzy search
   const fuse = new Fuse(mockProducts, {
@@ -40,9 +40,13 @@ export function Header({ cartItemCount = 0 }: HeaderProps) {
   };
 
   const handleProductClick = (id: string) => {
-    navigate(`/product/${id}`);
-    setIsFocused(false);
-    setSuggestions([]);
+    const product = mockProducts.find((p) => p.id === id);
+    if (product) {
+      setSelectedProduct(product);
+      navigate(`/product/${id}`);
+      setIsFocused(false);
+      setSuggestions([]);
+    }
   };
 
   const handleFinishSession = () => {
@@ -147,7 +151,7 @@ export function Header({ cartItemCount = 0 }: HeaderProps) {
                             <div>
                               <p className="font-medium">{item.name}</p>
                               <p className="text-sm text-muted-foreground">
-                                ${item.price}
+                                JOD{item.price}
                               </p>
                             </div>
                           </button>

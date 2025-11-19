@@ -38,7 +38,7 @@ export function CheckoutPage() {
     setUserAccount({
       email,
       hasAccount: true,
-      premiumTrial: false
+      premiumTrial: false,
     });
 
     navigate("/confirmation");
@@ -51,7 +51,11 @@ export function CheckoutPage() {
   if (state.cartItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <Button onClick={() => navigate("/")} variant="outline" className="mb-6">
+        <Button
+          onClick={() => navigate("/")}
+          variant="outline"
+          className="mb-6"
+        >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
         </Button>
@@ -66,7 +70,11 @@ export function CheckoutPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Button onClick={() => navigate("/cart")} variant="outline" className="mb-6">
+      <Button
+        onClick={() => navigate("/cart")}
+        variant="outline"
+        className="mb-6"
+      >
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back to Cart
       </Button>
@@ -192,16 +200,18 @@ export function CheckoutPage() {
                   <p className="text-xs text-gray-600">
                     {item.size} • {item.color}
                   </p>
-                  <p className="text-sm">${item.product.price}</p>
+                  <p className="text-sm">JOD{item.product.price}</p>
                   {item.addOns.warranty && (
-                    <p className="text-xs text-gray-600">+ Warranty $19.99</p>
+                    <p className="text-xs text-gray-600">+ Warranty JOD19.99</p>
                   )}
                   {item.addOns.insurance && (
-                    <p className="text-xs text-gray-600">+ Insurance $14.99</p>
+                    <p className="text-xs text-gray-600">
+                      + Insurance JOD14.99
+                    </p>
                   )}
                   {item.addOns.premiumSupport && (
                     <p className="text-xs text-gray-600">
-                      + Premium Support $9.99
+                      + Premium Support JOD9.99
                     </p>
                   )}
                 </div>

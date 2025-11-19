@@ -35,8 +35,8 @@ export function ProductPage() {
   const { state, addToCart, setSelectedProduct } = useAppContext();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [warrantyChecked, setWarrantyChecked] = useState(true);
-  const [newsletterChecked, setNewsletterChecked] = useState(true);
+  const [warrantyChecked, setWarrantyChecked] = useState(false);
+  const [newsletterChecked, setNewsletterChecked] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(0);
   const [added, setAdded] = useState(false);
   const navigate = useNavigate();
@@ -145,7 +145,6 @@ export function ProductPage() {
         </div>
 
         <div>
-
           <h1 className="text-3xl mb-4">{product.name}</h1>
 
           <div className="flex items-center gap-2 mb-4">
@@ -157,11 +156,13 @@ export function ProductPage() {
                 />
               ))}
             </div>
-            <span className="text-sm text-gray-600">4.9 (100 Verified reviews)</span>
+            <span className="text-sm text-gray-600">
+              4.9 (100 Verified reviews)
+            </span>
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl">${product.price}</span>
+            <span className="text-3xl">JOD{product.price}</span>
           </div>
 
           {/* options */}
@@ -208,17 +209,24 @@ export function ProductPage() {
                   id="warranty"
                   checked={warrantyChecked}
                   onCheckedChange={setWarrantyChecked}
-                  className='m-4 '
+                  className="m-4 "
                 />
                 <label htmlFor="warranty" className="text-sm flex-1">
-                  <span className="font-medium ">Extended Warranty (2 years) <a href="/privacy-terms" className="text-blue-600 underline">view privacy and terms</a></span>
+                  <span className="font-medium ">
+                    Extended Warranty (2 years){" "}
+                    <a
+                      href="/privacy-terms"
+                      className="text-blue-600 underline"
+                    >
+                      view privacy and terms
+                    </a>
+                  </span>
                   <span className="text-gray-600 block">
-                    Protect your purchase - only $19.99
+                    Protect your purchase - only JOD19.99
                   </span>
                 </label>
-                <span className="text-sm font-medium">$19.99</span>
+                <span className="text-sm font-medium">JOD19.99</span>
               </div>
-
             </div>
           </div>
 
@@ -235,7 +243,7 @@ export function ProductPage() {
               </span>
             ) : (
               <>
-                Add to Cart - $
+                Add to Cart - JOD
                 {warrantyChecked
                   ? (product.price + 19.99).toFixed(2)
                   : product.price}

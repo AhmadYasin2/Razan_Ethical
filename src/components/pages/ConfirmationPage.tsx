@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Check,
-  ArrowLeft,
-  Package,
-  Clock
-} from "lucide-react";
+import { Check, ArrowLeft, Package, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -69,9 +64,7 @@ export function ConfirmationPage() {
                       className="w-12 h-12 object-cover rounded"
                     />
                     <div className="flex-1">
-                      <p className="text-sm font-medium">
-                        {item.product.name}
-                      </p>
+                      <p className="text-sm font-medium">{item.product.name}</p>
                       <p className="text-xs text-gray-600">
                         {item.size} • {item.color}
                       </p>
@@ -101,19 +94,19 @@ export function ConfirmationPage() {
                       {item.addOns.warranty && (
                         <div className="flex justify-between text-gray-600">
                           <span className="text-xs">• Extended Warranty</span>
-                          <span className="text-xs">$19.99</span>
+                          <span className="text-xs">JOD19.99</span>
                         </div>
                       )}
                       {item.addOns.insurance && (
                         <div className="flex justify-between text-gray-600">
                           <span className="text-xs">• Insurance</span>
-                          <span className="text-xs">$14.99</span>
+                          <span className="text-xs">JOD14.99</span>
                         </div>
                       )}
                       {item.addOns.premiumSupport && (
                         <div className="flex justify-between text-gray-600">
                           <span className="text-xs">• Premium Support</span>
-                          <span className="text-xs">$9.99</span>
+                          <span className="text-xs">JOD9.99</span>
                         </div>
                       )}
                     </div>
@@ -137,9 +130,7 @@ export function ConfirmationPage() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm">Estimated Delivery:</span>
-                  <span className="text-sm font-medium">
-                    5–7 business days
-                  </span>
+                  <span className="text-sm font-medium">5–7 business days</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm">Shipping Method:</span>

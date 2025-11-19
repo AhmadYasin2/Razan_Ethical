@@ -62,7 +62,6 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         {product.isSale && <Badge className="bg-red-600">Sale</Badge>}
       </div>
 
-
       <div className="p-4">
         <h3 className="text-lg mb-2 group-hover:text-blue-600 transition-colors">
           {product.name}
@@ -71,10 +70,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xl">${product.price}</span>
+            <span className="text-xl">JOD{product.price}</span>
             {product.originalPrice && (
               <span className="text-gray-500 line-through">
-                ${product.originalPrice}
+                JOD{product.originalPrice}
               </span>
             )}
           </div>

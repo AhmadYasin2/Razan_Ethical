@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  ArrowLeft,
-  Trash2,
-  Shield,
-  Headphones,
-} from "lucide-react";
+import { ArrowLeft, Trash2, Shield, Headphones } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
@@ -62,11 +57,7 @@ export function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Button
-        onClick={() => navigate("/")}
-        variant="outline"
-        className="mb-6"
-      >
+      <Button onClick={() => navigate("/")} variant="outline" className="mb-6">
         <ArrowLeft className="h-4 w-4 mr-2" />
         Continue Shopping
       </Button>
@@ -88,18 +79,17 @@ export function CartPage() {
                   <p className="text-sm text-gray-600 mb-2">
                     {item.size} • {item.color}
                   </p>
-                  <p className="text-lg font-medium">${item.product.price}</p>
+                  <p className="text-lg font-medium">JOD{item.product.price}</p>
 
                   {(item.addOns.warranty ||
                     item.addOns.insurance ||
                     item.addOns.premiumSupport) && (
                     <div className="mt-3 space-y-2">
-
                       {item.addOns.warranty && (
                         <div className="flex items-center justify-between text-sm">
                           <span>Extended Warranty</span>
                           <div className="flex items-center gap-2">
-                            <span>$19.99</span>
+                            <span>JOD19.99</span>
                             <button
                               onClick={() => removeAddOn(index, "warranty")}
                               className="text-xs text-gray-400 hover:text-gray-600 underline"
@@ -117,7 +107,7 @@ export function CartPage() {
                             <span>Protection Insurance</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span>$14.99</span>
+                            <span>JOD14.99</span>
                             <button
                               onClick={() => removeAddOn(index, "insurance")}
                               className="text-xs hover:text-gray-600 underline"
@@ -135,9 +125,11 @@ export function CartPage() {
                             <span>Premium Support</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span>$9.99</span>
+                            <span>JOD9.99</span>
                             <button
-                              onClick={() => removeAddOn(index, "premiumSupport")}
+                              onClick={() =>
+                                removeAddOn(index, "premiumSupport")
+                              }
                               className="text-xs hover:text-gray-600 underline"
                             >
                               remove
@@ -145,7 +137,6 @@ export function CartPage() {
                           </div>
                         </div>
                       )}
-
                     </div>
                   )}
                 </div>
@@ -169,7 +160,7 @@ export function CartPage() {
           <div className="space-y-2 mb-4">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>JOD{subtotal.toFixed(2)}</span>
             </div>
           </div>
 
@@ -177,13 +168,10 @@ export function CartPage() {
 
           <div className="flex justify-between text-lg font-medium mb-6">
             <span>Total</span>
-            <span>${total.toFixed(2)}</span>
+            <span>JOD{total.toFixed(2)}</span>
           </div>
 
-          <Button
-            onClick={() => navigate("/checkout")}
-            className="w-full h-12"
-          >
+          <Button onClick={() => navigate("/checkout")} className="w-full h-12">
             Proceed to Checkout
           </Button>
         </div>

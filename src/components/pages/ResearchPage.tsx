@@ -148,9 +148,7 @@ const ResearchPage: React.FC = () => {
         <h1 className="text-4xl font-bold mb-2 flex items-center gap-2">
           <Eye className="inline-block" /> UX Research Mode
         </h1>
-        <p className="text-slate-400 mb-8">
-          Gaze tracking and deceptive UX analysis.
-        </p>
+
 
         <div className="mb-8 p-4 rounded-lg bg-slate-800 border border-slate-700 flex items-center gap-3">
           {state.webGazerSession.isActive ? (
