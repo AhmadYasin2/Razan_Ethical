@@ -6,13 +6,14 @@
     <title>Ecommerce Website Deceptive Design (Copy)</title>
 
     <!-- Styles required by the WebGazer calibration page (served from /public) -->
+    <!-- Use CDN fallbacks for third-party libs to avoid 404s when local build is missing -->
     <link
       rel="stylesheet"
-      href="/WebGazer/www/node_modules/bootstrap/dist/css/bootstrap.min.css"
+      href="https://unpkg.com/bootstrap@4.6.2/dist/css/bootstrap.min.css"
     />
     <link
       rel="stylesheet"
-      href="/WebGazer/www/node_modules/sweetalert/dist/sweetalert.css"
+      href="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.css"
     />
     <link rel="stylesheet" href="/WebGazer/www/css/style.css" />
   </head>
@@ -20,9 +21,9 @@
   <body>
     <div id="root"></div>
 
-    <!-- WebGazer and dependencies - loaded globally for calibration page -->
-    <script src="/WebGazer/www/webgazer.js"></script>
-    <script src="/WebGazer/www/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- WebGazer and dependencies - use CDN fallbacks if local files are missing -->
+    <script src="https://unpkg.com/webgazer@3.4.0/dist/webgazer.js"></script>
+    <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>

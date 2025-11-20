@@ -160,10 +160,43 @@ export function useWebGazer(
         setReady(true);
       };
 
+      // If the local file is missing, try loading from a reliable CDN as a fallback
       script.onerror = () => {
-        console.error(
-          "❌ Failed to load WebGazer script from /WebGazer/www/webgazer.js"
+        console.warn(
+          "⚠️ Failed to load local WebGazer script; attempting CDN fallback..."
         );
+
+        const cdnScript = document.createElement("script");
+        cdnScript.src = "https://unpkg.com/webgazer@3.4.0/dist/webgazer.js";
+        cdnScript.async = true;
+        cdnScript.onload = () => {
+          console.log("✅ WebGazer loaded from CDN fallback");
+          const wg: any = (window as any).webgazer;
+          if (!wg) {
+            console.error("❌ WebGazer object not found after CDN load");
+            return;
+          }
+
+          wg.setRegression?.(config?.regression || "ridge");
+          wg.setTracker?.(config?.tracker || "clmtrackr");
+          wg.showVideoPreview?.(config?.showVideo ?? false);
+          wg.showPredictionPoints?.(config?.showPredictionPoints ?? false);
+
+          console.log("🟡 Starting tracking...");
+          wg.begin?.();
+
+          setupGazeListener(wg);
+          console.log("✅ WebGazer ready!");
+          setReady(true);
+        };
+
+        cdnScript.onerror = () => {
+          console.error(
+            "❌ Failed to load WebGazer from both local and CDN sources"
+          );
+        };
+
+        document.body.appendChild(cdnScript);
       };
 
       document.body.appendChild(script);
